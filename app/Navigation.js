@@ -2,9 +2,11 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import LoginScreen from './LoginScreen'
+import ContactScreen from './ContactScreen'
 
 const RootStack = createStackNavigator({
   Login: LoginScreen,
+  Contacts: ContactScreen,
 });
 
 const App = createAppContainer(RootStack);
