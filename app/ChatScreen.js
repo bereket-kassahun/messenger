@@ -178,11 +178,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.contactMessageRow}>
           <View style={styles.contactMessageContainer}>
-            <Text style={styles.contactMessage}>
-              {message.seen == true
-                ? message.message + ' //'
-                : message.message + ' /'}
-            </Text>
+            <Text style={styles.contactMessage}>{message.message + ' //'}</Text>
           </View>
         </View>
       );
