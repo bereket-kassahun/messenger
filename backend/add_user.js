@@ -4,8 +4,8 @@ const url = require('url');
 function insert(req, res) {
   const connection = con.connect();
   const parts = url.parse(req.url, true);
+  // getting parameters sent in the request url
   const query = parts.query;
-  console.log('hello');
   if (query.username && query.password) {
     connection.execute(
       'INSERT INTO `messenger_users`(`username`, `password`) VALUES (?,?)',
