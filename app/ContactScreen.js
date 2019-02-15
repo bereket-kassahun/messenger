@@ -22,7 +22,6 @@ const SERVER_DELETE_CONTACT_URL =
 
 export default class ContactScreen extends React.Component {
   state = {
-    contacts: [],
     dataSource: [],
     input_username: '',
   };
@@ -40,7 +39,7 @@ export default class ContactScreen extends React.Component {
       return;
     }
     for (var i = 0; i < this.state.contacts.length; i++) {
-      if (this.state.input_username === this.state.contacts[i].username) {
+      if (this.state.input_username === this.state.dataSource[i].username) {
         ShowMessage(
           'Error',
           'Contact ' + this.state.contact + ' already exists',
@@ -63,7 +62,6 @@ export default class ContactScreen extends React.Component {
           this.setState(prev => {
             return {
               dataSource: prev.dataSource.concat(responseData),
-              contacts: prev.contacts.concat(responseData),
             };
           });
           ShowMessage(
@@ -85,9 +83,7 @@ export default class ContactScreen extends React.Component {
     fetch(SERVER_GET_CONTACTS_URL + '?id=' + navigation.getParam('id', '1'))
       .then(response => response.json())
       .then(responseData => {
-        // this.hideProgressBar();
         this.setState({
-          contacts: responseData,
           dataSource: responseData,
         });
       })
@@ -105,11 +101,11 @@ export default class ContactScreen extends React.Component {
       .then(response => response.json())
       .then(responseData => {
         // this.hideProgressBar();
-        if (responseData.status) {
-          ShowMessage('contact successfully deleted');
+        if (responseData.status == 0) {
+          ShowMessage('Success', 'contact successfully deleted');
           this.getContacts();
         } else {
-          ShowMessage('unable to delete the contact');
+          ShowMessage('Error', 'unable to delete the contact');
         }
       })
       .done();

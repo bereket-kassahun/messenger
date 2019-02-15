@@ -6,20 +6,17 @@ import {
   TextInput,
   StyleSheet,
 } from 'react-native';
-import {UIManager} from 'react-native';
+
 import ShowMessage from './ShowMessage';
 
-global.IP_ADRESS = '192.168.43.119'; // edit the value to your computers current IP adress
+global.IP_ADRESS = '10.28.195.231'; // edit the value to your computers current IP adress
 
-global.PORT = '3000'; // port of the backend
+global.PORT = '3000'; // have to be equal to the backend port
 
 var SERVER_LOGIN_URL =
   'http://' + global.IP_ADRESS + ':' + global.PORT + '/get_user';
 var SERVER_SIGNUP_URL =
   'http://' + global.IP_ADRESS + ':' + global.PORT + '/add_user';
-
-UIManager.setLayoutAnimationEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 export default class LoginScreen extends React.Component {
   state = {
@@ -27,6 +24,7 @@ export default class LoginScreen extends React.Component {
     password: '',
   };
 
+  // called when login button is clicked
   login() {
     if (this.state.username === '') {
       ShowMessage('Error', 'Username cannot be empty');
@@ -60,6 +58,7 @@ export default class LoginScreen extends React.Component {
       .done();
   }
 
+  //called when signup button is clicked
   signup() {
     if (this.state.username === '') {
       ShowMessage('Error', 'Username cannot be empty');

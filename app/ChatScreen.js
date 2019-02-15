@@ -22,24 +22,14 @@ const SERVER_UNSET_LIVE_URL =
 var ShowMessage = require('./ShowMessage');
 
 export default class App extends React.Component {
-  constructor() {
-    super();
-    this.sendNewMessage = this.sendNewMessage.bind(this);
-    this.textInput = React.createRef();
-  }
-
   state = {
     dataSource: '',
-    messages: [],
     newMessage: '',
-    loading: false,
-    id: 1,
     live: false,
-    password: 'kassahun',
-    contactId: 8,
   };
 
   componentDidMount() {
+    //checks for new message every 9 seconds
     this._interval = setInterval(() => {
       this.getMessages();
     }, 9000);
@@ -48,6 +38,7 @@ export default class App extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this._interval);
+    //unsetting live when leaving the chat page
     this.unsetLive();
   }
 
@@ -56,19 +47,17 @@ export default class App extends React.Component {
     fetch(
       SERVER_GET_MESSAGES_URL +
         '?id=' +
-        navigation.getParam('id', '21') +
+        navigation.getParam('id', '1') +
         '&contact_id=' +
-        navigation.getParam('contactId', '21'),
+        navigation.getParam('contactId', '1'),
     )
       .then(response => response.json())
       .then(responseData => {
         var message = responseData.messages;
-        // var oldMessagesNumber = this.state.messages.length;
-        console.log(responseData);
+
+        // makes recent messages to the bottom of flatlist view
         message.reverse();
-        console.log(responseData);
         this.setState({
-          messages: message,
           dataSource: message,
           live: responseData.live[0].online == 1 ? 'true' : 'false',
         });
@@ -92,9 +81,11 @@ export default class App extends React.Component {
       .done();
   }
 
+  //called when send button is clicked
   sendNewMessage() {
+    //getting text of textinput
     var message = this.state.newMessage;
-    // this.textInput.text.clear()
+
     if (message) {
       const {navigation} = this.props;
       fetch(
@@ -102,7 +93,7 @@ export default class App extends React.Component {
           '?from_id=' +
           navigation.getParam('id', '1') +
           '&to_id=' +
-          navigation.getParam('contactId', '8') +
+          navigation.getParam('contactId', '1') +
           '&message=' +
           message,
       )
@@ -112,7 +103,7 @@ export default class App extends React.Component {
         })
         .done();
     } else {
-      ShowMessage('empty', 'not sent');
+      ShowMessage('Error', 'no message to send');
     }
   }
 
@@ -122,7 +113,7 @@ export default class App extends React.Component {
       <View style={styles.mainContainer}>
         <Button
           title={
-            navigation.getParam('contactUsername', '1') +
+            navigation.getParam('contactUsername', '') +
             '      Live :' +
             this.state.live
           }></Button>
@@ -162,6 +153,7 @@ export default class App extends React.Component {
   renderMessage(message) {
     const {navigation} = this.props;
 
+    //render for sent messages from here
     if (message.from_id == navigation.getParam('id', '8')) {
       return (
         <View style={styles.userMessageRow}>
@@ -174,7 +166,9 @@ export default class App extends React.Component {
           </View>
         </View>
       );
-    } else {
+    }
+    //render for received messages
+    else {
       return (
         <View style={styles.contactMessageRow}>
           <View style={styles.contactMessageContainer}>
