@@ -13,11 +13,13 @@ var app = http.createServer(function(req, res) {
   let url = req.url;
   url = url.split('?');
   url = url[0];
-  // res.setHeader('Content-Type', 'application/json');
+
+  // making the response type json
   res.writeHead(200, {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
   });
+
   if (url == '/get_user') {
     get_users.fetch(req, res);
   } else if (url == '/get_contacts') {
@@ -38,4 +40,5 @@ var app = http.createServer(function(req, res) {
     delete_contact.remove(req, res);
   }
 });
+
 app.listen(3000);

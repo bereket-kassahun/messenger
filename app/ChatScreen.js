@@ -9,6 +9,7 @@ import {
   FlatList,
   TextInput,
 } from 'react-native';
+import MessageRow from './MessageRow';
 
 const PORT = '3000';
 var SERVER_ADD_MESSAGES_URL =
@@ -23,6 +24,7 @@ var ShowMessage = require('./ShowMessage');
 
 export default class App extends React.Component {
   state = {
+    key: '',
     dataSource: '',
     newMessage: '',
     live: false,
@@ -58,6 +60,7 @@ export default class App extends React.Component {
         // makes recent messages to the bottom of flatlist view
         message.reverse();
         this.setState({
+          key: message.message_id,
           dataSource: message,
           live: responseData.live[0].online == 1 ? 'true' : 'false',
         });
@@ -119,6 +122,7 @@ export default class App extends React.Component {
           }></Button>
 
         <FlatList
+          key={this.state.key}
           data={this.state.dataSource}
           renderItem={({item}) => this.renderMessage(item)}
           keyExtractor={item => item.contact_id}
@@ -153,28 +157,22 @@ export default class App extends React.Component {
   renderMessage(message) {
     const {navigation} = this.props;
 
-    //render for sent messages from here
+    //render for sent messages
     if (message.from_id == navigation.getParam('id', '8')) {
       return (
-        <View style={styles.userMessageRow}>
-          <View style={styles.userMessageContainer}>
-            <Text style={styles.userMessage}>
-              {message.seen == true
-                ? message.message + ' //'
-                : message.message + ' /'}
-            </Text>
-          </View>
-        </View>
+        <MessageRow
+          message={{...message, status: 'sent'}}
+          key={this.state.key}
+        />
       );
     }
     //render for received messages
     else {
       return (
-        <View style={styles.contactMessageRow}>
-          <View style={styles.contactMessageContainer}>
-            <Text style={styles.contactMessage}>{message.message + ' //'}</Text>
-          </View>
-        </View>
+        <MessageRow
+          message={{...message, status: 'received'}}
+          key={this.state.key}
+        />
       );
     }
   }
@@ -184,22 +182,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     backgroundColor: '#f5fcff',
     flex: 1,
-  },
-  contactMessage: {
-    color: 'black',
-  },
-  contactMessageContainer: {
-    alignItems: 'center',
-    backgroundColor: 'rgb(0,162,232)',
-    borderRadius: 5,
-    justifyContent: 'center',
-    marginBottom: 10,
-    marginTop: 10,
-    marginLeft: 10,
-    padding: 5,
-  },
-  contactMessageRow: {
-    alignItems: 'flex-start',
   },
   listView: {
     backgroundColor: '#f5fcff',
@@ -252,22 +234,6 @@ const styles = StyleSheet.create({
   toolbar: {
     backgroundColor: '#5d1f9c',
     height: 56,
-  },
-  userMessage: {
-    color: 'white',
-  },
-  userMessageContainer: {
-    alignItems: 'center',
-    backgroundColor: '#5d1f9c',
-    borderRadius: 5,
-    justifyContent: 'center',
-    marginBottom: 10,
-    marginTop: 10,
-    marginRight: 10,
-    padding: 5,
-  },
-  userMessageRow: {
-    alignItems: 'flex-end',
   },
   whiteText: {
     color: 'white',

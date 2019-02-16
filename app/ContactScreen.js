@@ -33,17 +33,19 @@ export default class ContactScreen extends React.Component {
   addNewContact() {
     const {navigation} = this.props;
     if (
-      this.state.input_username === navigation.getParam('username', 'bereket')
+      this.state.input_username.toUpperCase() ===
+      navigation.getParam('username', 'bereket').toUpperCase()
     ) {
       ShowMessage('Error', 'You cannot add yourself to contacts!');
       return;
     }
-    for (var i = 0; i < this.state.contacts.length; i++) {
-      if (this.state.input_username === this.state.dataSource[i].username) {
-        ShowMessage(
-          'Error',
-          'Contact ' + this.state.contact + ' already exists',
-        );
+    for (var i = 0; i < this.state.dataSource.length; i++) {
+      // insensitive string comparison
+      if (
+        this.state.input_username.toUpperCase() ==
+        this.state.dataSource[i].username.toUpperCase()
+      ) {
+        ShowMessage('Error', 'Contact already exists');
         return;
       }
     }
@@ -199,15 +201,5 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
-  },
-  progressBarContainer: {
-    alignItems: 'center',
-    backgroundColor: '#f5fcff',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  toolbar: {
-    backgroundColor: '#5d1f9c',
-    height: 56,
   },
 });

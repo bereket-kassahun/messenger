@@ -9,7 +9,7 @@ import {
 
 import ShowMessage from './ShowMessage';
 
-global.IP_ADRESS = '10.28.195.231'; // edit the value to your computers current IP adress
+global.IP_ADRESS = '192.168.43.119'; // edit the value to your computers current IP adress
 
 global.PORT = '3000'; // have to be equal to the backend port
 
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgb(0,128,255)',
     borderStyle: 'solid',
     borderWidth: 3,
-    height: 40,
+    height: 50,
     justifyContent: 'center',
     marginTop: 20,
   },
@@ -167,10 +167,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center',
     width: 200,
-  },
-  toolbar: {
-    backgroundColor: 'rgb(0,128,255)',
-    height: 56,
   },
   whiteText: {
     color: 'white',
