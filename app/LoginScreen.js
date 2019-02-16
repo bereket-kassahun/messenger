@@ -53,11 +53,18 @@ export default class LoginScreen extends React.Component {
             password: this.state.password,
             username: this.state.username,
           });
+          //clearing text fields and variables
+          this.clear();
         }
       })
       .done();
   }
 
+  clear() {
+    this.usernameInput.clear();
+    this.passwordInput.clear();
+    this.setState({username: '', password: ''});
+  }
   //called when signup button is clicked
   signup() {
     if (this.state.username === '') {
@@ -83,6 +90,7 @@ export default class LoginScreen extends React.Component {
           ShowMessage('Error', 'This username is already taken');
         } else {
           ShowMessage('Success', 'You have successfully signed up');
+          this.clear();
         }
       })
       .done();
@@ -97,6 +105,9 @@ export default class LoginScreen extends React.Component {
               style={styles.textInput}
               placeholder={'username'}
               text={this.state.username}
+              ref={input => {
+                this.usernameInput = input;
+              }}
               onChangeText={e => this.setState({username: e})}
             />
           </View>
@@ -105,6 +116,9 @@ export default class LoginScreen extends React.Component {
               secureTextEntry={true}
               style={styles.textInput}
               placeholder={'password'}
+              ref={input => {
+                this.passwordInput = input;
+              }}
               text={this.state.password}
               onChangeText={e => this.setState({password: e})}
             />

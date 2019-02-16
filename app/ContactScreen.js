@@ -70,6 +70,7 @@ export default class ContactScreen extends React.Component {
             'Success',
             'User ' + this.state.input_username + ' was added to your contacts',
           );
+          this.clear();
         } else {
           ShowMessage(
             'Error',
@@ -90,6 +91,11 @@ export default class ContactScreen extends React.Component {
         });
       })
       .done();
+  }
+
+  clear() {
+    this.contactInput.clear();
+    this.setState({input_username: ''});
   }
   deleteContact(contact_id) {
     const {navigation} = this.props;
@@ -121,6 +127,7 @@ export default class ContactScreen extends React.Component {
       contactId: item.contact_id,
       contactUsername: item.username,
     });
+    this.clear();
   }
 
   render() {
@@ -138,6 +145,9 @@ export default class ContactScreen extends React.Component {
           placeholder={'username'}
           onChangeText={e => {
             this.setState({input_username: e});
+          }}
+          ref={input => {
+            this.contactInput = input;
           }}></TextInput>
         <Button title={'ADD TO CONTACT'} onPress={() => this.addNewContact()} />
       </View>

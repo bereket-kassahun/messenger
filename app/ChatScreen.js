@@ -76,6 +76,10 @@ export default class App extends React.Component {
       .done();
   }
 
+  clear() {
+    this.textInput.clear();
+    this.setState({newMessage: ''});
+  }
   unsetLive() {
     const {navigation} = this.props;
     fetch(SERVER_UNSET_LIVE_URL + '?id=' + navigation.getParam('id', '1'))
@@ -103,6 +107,7 @@ export default class App extends React.Component {
         .then(response => response.json())
         .then(responseData => {
           this.getMessages();
+          this.clear();
         })
         .done();
     } else {
@@ -141,6 +146,9 @@ export default class App extends React.Component {
             text={this.state.newMessage}
             onChangeText={e => {
               this.setState({newMessage: e});
+            }}
+            ref={input => {
+              this.textInput = input;
             }}
           />
           <TouchableHighlight
